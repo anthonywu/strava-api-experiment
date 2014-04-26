@@ -1,0 +1,4 @@
+blessings==1.5.1
+docopt==0.6.1
+Flask==0.10.1
+stravalib==0.2.2
