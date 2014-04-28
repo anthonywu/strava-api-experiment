@@ -28,4 +28,19 @@ This project is my personal experiment with [Strava's API](http://strava.github.
 7. Run the local OAuth client: `./strava_local_client.py get_write_token <client_id> <client_secret>`. The client will provide an url (or on OS X, launch your default browser to that url) which directs you to a strava.com page that lets you authorize write-access to your account. After you authorize the usage, the OAuth callback returns to the `localhost`-hosted client app with a `code` that the client then exchanges for an `access_token`. Your browser should display the `access_token` as the response. You can now use this write-permission `access_token` to view and modify your own user data.
 8. Getting on the Python command line to play with the API: `STRAVA_API_TOKEN=<access_token> konch`
 
+e.g.
+
+```
+$ strava-api-experiment/src $ STRAVA_API_TOKEN=<...> konch
+utils: <module 'utils' from 'strava-api-experiment/src/utils.pyc'>
+client: <utils.MyStravaClient object at 0x10edc9050>
+
+In [1]: client.get_athlete_clubs()
+Out[1]:
+[<Club id=11111 name=u'BAF' resource_state=2>,
+ <Club id=22222 name=u'LS' resource_state=2>]
+```
+
+See [stravalib](https://github.com/hozn/stravalib) documentation on how to use the `client` object.
+
 Enjoy!
