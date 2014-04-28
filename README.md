@@ -1,6 +1,6 @@
 # Strava API Experiment
 
-This project is my personal experiment with [Strava's API](http://strava.github.io/api/). As an almost daily user of Strava, I have some ideas for working with my own personal data as well as public community data, but I am not ready to package this tool for public consumption yet (e.g. as a published lib or web app).
+This project is my personal experiment with [Strava's API](http://strava.github.io/api/). As an almost daily user of Strava recording private/commute rides as well as the occassional long weekend workout ride, I have some ideas for working with my own personal data as well as public community data, but I am not ready to package this tool for public consumption yet (e.g. as a published lib or web app).
 
 This is an "afternoon project" for the time being, so I don't guarantee or claim any foresight or quality. Use or borrow this code at your own risk!
 
