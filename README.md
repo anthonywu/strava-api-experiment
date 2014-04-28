@@ -4,6 +4,8 @@ This project is my personal experiment with [Strava's API](http://strava.github.
 
 This is an "afternoon project" for the time being, so I don't guarantee or claim any foresight or quality. Use or borrow this code at your own risk!
 
+[Support this project on Gittip](https://www.gittip.com/anthonywu/)
+
 ### Ideas
 
 * analyze the breakdown between public vs. private activities
