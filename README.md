@@ -2,10 +2,14 @@
 
 This project is my personal experiment with [Strava's API](http://strava.github.io/api/). As an almost daily user of Strava, I have some ideas for working with my own personal data as well as public community data, but I am not ready to package this tool for public consumption yet (e.g. as a published lib or web app).
 
+This is an "afternoon project" for the time being, so I don't guarantee or claim any foresight or quality. Use or borrow this code at your own risk!
+
 ### Ideas
 
 * analyze the breakdown between public vs. private activities
 * analyze workout vs. commute bike rides
+
+Note: there's a site called [VeloViewer](http://veloviewer.com/) which already does a bunch of fancy analytics and visualizations with your Strava data, so you might want to check that out. However, it's not open source (as far as I can tell).
 
 ### What's inside so far
 
