@@ -14,7 +14,7 @@ This project is my personal experiment with [Strava's API](http://strava.github.
 
 ### 3rd Party Dependencies
 
-* [hozn's stravalib](https://github.com/hozn/stravalib])
+* [hozn's stravalib](https://github.com/hozn/stravalib)
 * Python libs listed in requirements.txt
 
 ### Exploring the API for your own data
