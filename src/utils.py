@@ -1,7 +1,7 @@
 import collections
 import datetime
+import stravalib.client
 import time
-from stravalib.client import Client
 
 class BaseException(Exception):
     pass
@@ -9,7 +9,7 @@ class BaseException(Exception):
 class ConfigError(BaseException):
     pass
 
-class MyStravaClient(Client):
+class MyStravaClient(stravalib.client.Client):
 
     API_CALL_PAUSE_SECONDS = 0.1
 
@@ -22,13 +22,16 @@ class MyStravaClient(Client):
             gears.append(self.get_gear(gear_id))
         return gears
 
-    def get_activities_current_month(client, filter_types=['Ride']):
+    def get_activities(self, **kwargs):
+        return list(stravalib.client.Client.get_activities(self, **kwargs))
+
+    def get_activities_current_month(self, filter_types=['Ride']):
         # get first date of current month
         now = datetime.datetime.now()
         first_of_month = datetime.datetime(now.year, now.month, 1)
         # compile activities since first day of current month
         matches = []
-        activities_list = client.get_activities(after=first_of_month)
+        activities_list = self.get_activities(after=first_of_month)
         for activity in activities_list:
             if activity.type in filter_types:
                 matches.append(activity)
