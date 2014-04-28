@@ -1,0 +1,18 @@
+"""
+Bash usage:
+    STRAVA_API_TOKEN=<value> konch
+"""
+
+import konch
+
+import os
+import utils
+
+client = utils.MyStravaClient(access_token=os.environ['STRAVA_API_TOKEN'])
+
+konch.config({
+  'banner': 'Strava Experiment',
+  'context': {
+  	'client': client
+  }
+})
