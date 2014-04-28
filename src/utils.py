@@ -1,3 +1,4 @@
+import collections
 import datetime
 import time
 from stravalib.client import Client
@@ -40,6 +41,15 @@ class MyStravaClient(Client):
             time.sleep(self.API_CALL_PAUSE_SECONDS)
             updated_ids.append(each)
         return updated_ids
+
+
+def summarize_gear_usage(activity_list):
+    gear_usage_count_lookup = collections.defaultdict(int)
+    gear_distance_lookup = collections.defaultdict(float)
+    for activity in activity_list:
+        gear_usage_count_lookup[activity.gear_id] += 1
+        gear_distance_lookup[activity.gear_id] += activity.distance.get_num()
+    return dict(gear_usage_count_lookup), dict(gear_distance_lookup)
 
 
 def summarize(activities_list):
