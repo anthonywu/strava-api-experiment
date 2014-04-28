@@ -1,5 +1,5 @@
-import os
-from datetime import date
+import datetime
+import time
 from stravalib.client import Client
 
 class BaseException(Exception):
@@ -8,28 +8,44 @@ class BaseException(Exception):
 class ConfigError(BaseException):
     pass
 
-def get_env_token(env_var_name='STRAVA_ACCESS_TOKEN'):
-    try:
-        return os.environ[env_var_name]
-    except KeyError:
-        raise ConfigError('Access Token not defined in environment variable %r' % env_var_name)
+class MyStravaClient(Client):
 
-def get_client(token):
-    return Client(access_token=token)
+    API_CALL_PAUSE_SECONDS = 0.1
 
-def get_activities_current_month(activities_list, filter_types=['Ride']):
-    today = date.today()
-    matches = []
-    for activity in activities_list:
-        if (activity.start_date_local.year, activity.start_date_local.month) == (today.year, today.month):
+    def get_all_gears(self):
+        all_activities = self.get_activities()
+        uniq_gear_ids = filter(None, set(activity.gear_id for activity in all_activities))
+        gears = []
+        for gear_id in uniq_gear_ids:
+            time.sleep(self.API_CALL_PAUSE_SECONDS)
+            gears.append(self.get_gear(gear_id))
+        return gears
+
+    def get_activities_current_month(client, filter_types=['Ride']):
+        # get first date of current month
+        now = datetime.datetime.now()
+        first_of_month = datetime.datetime(now.year, now.month, 1)
+        # compile activities since first day of current month
+        matches = []
+        activities_list = client.get_activities(after=first_of_month)
+        for activity in activities_list:
             if activity.type in filter_types:
                 matches.append(activity)
-    return matches
+        return matches
+
+    def batch_set_privacy(self, activity_ids, private=True):
+        updated_ids = []
+        for each in activity_ids:
+            self.update_activity(each, private=private)
+            time.sleep(self.API_CALL_PAUSE_SECONDS)
+            updated_ids.append(each)
+        return updated_ids
+
 
 def summarize(activities_list):
     summary = {
         'distance': 0.0,
-        'count_public': 0.0,
+        'count_public': 0,
         'distance_public': 0.0,
         'distance_private': 0.0,
         'private_ids': [],
@@ -52,3 +68,4 @@ def summarize(activities_list):
     summary['count_private'] = len(summary['private_ids'])
     summary['count_commute'] = len(summary['commute_ids'])
     return summary
+
