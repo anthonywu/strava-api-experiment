@@ -13,6 +13,8 @@ client = utils.MyStravaClient(access_token=os.environ['STRAVA_API_TOKEN'])
 konch.config({
   'banner': 'Strava Experiment',
   'context': {
-  	'client': client
+  	'utils': utils,
+  	'client': client,
+  	'all_activities': client.get_activities()
   }
 })
