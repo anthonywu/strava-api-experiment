@@ -8,13 +8,19 @@ import konch
 import os
 import utils
 
-client = utils.MyStravaClient(access_token=os.environ['STRAVA_API_TOKEN'])
+try:
+	client = utils.MyStravaClient(access_token=os.environ['STRAVA_API_TOKEN'])
+except KeyError:
+	sys.exit('STRAVA_API_TOKEN not provided - to get this value run: `strava_local_client.py -h`. Then come back to run `STRAVA_API_TOKEN=<write_access_token> konch`')
+
+current_activities = client.get_activities_current_month()
 
 konch.config({
   'banner': 'Strava Experiment',
   'context': {
   	'utils': utils,
   	'client': client,
-  	'all_activities': client.get_activities()
+  	'current_activities': current_activities,
+  	'current_summary': utils.summarize(current_activities)
   }
 })
