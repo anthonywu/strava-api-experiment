@@ -53,10 +53,11 @@ if __name__ == '__main__':
             scope='write',
             state='from_cli'
             )
-        print(t.red('Go to {0} to authorize access: '.format(auth_url)))
         if sys.platform == 'darwin':
-            print(t.green('On OS X - launching url at default browser'))
+            print(t.green('On OS X - launching {0} at default browser'.format(auth_url)))
             subprocess.call(['open', auth_url])
+        else:
+            print(t.red('Go to {0} to authorize access: '.format(auth_url)))
         app.run(port=int(args['--port']))
     elif args['find_settings']:
         subprocess.call(['open', 'https://www.strava.com/settings/api'])
