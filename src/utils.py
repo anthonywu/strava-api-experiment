@@ -11,7 +11,7 @@ class ConfigError(BaseException):
 
 class MyStravaClient(stravalib.client.Client):
 
-    API_CALL_PAUSE_SECONDS = 0.1
+    API_CALL_PAUSE_SECONDS = 0.5
 
     def get_all_gears(self):
         all_activities = self.get_activities()
