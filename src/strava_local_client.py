@@ -42,12 +42,12 @@ if __name__ == '__main__':
     from blessings import Terminal
 
     args = docopt.docopt(__doc__)
-    CLIENT_ID, CLIENT_SECRET = args['<client_id>'], args['<client_secret>']
     t = Terminal()
 
     if args['get_write_token']:
+        CLIENT_ID, CLIENT_SECRET = args['<client_id>'], args['<client_secret>']
         auth_url = API_CLIENT.authorization_url(
-            client_id=1418,
+            client_id=args['<client_id>'],
             redirect_uri='http://127.0.0.1:{port}/auth'.format(port=args['--port']),
             scope='write',
             state='from_cli'
