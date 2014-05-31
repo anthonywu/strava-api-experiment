@@ -55,23 +55,29 @@ def summarize_gear_usage(activity_list):
     return dict(gear_usage_count_lookup), dict(gear_distance_lookup)
 
 
-def summarize(activities_list):
+def summarize(activities_list, short_ride_threshold=5.0):
     summary = {
         'distance': 0.0,
         'count_public': 0,
         'distance_public': 0.0,
         'distance_private': 0.0,
         'private_ids': [],
-        'commute_ids': []
+        'commute_ids': [],
+        'short_rides_ids': []
     }
     for activity in activities_list:
         summary['distance'] += activity.distance.get_num()
+        activity_distance = activity.distance.get_num()
         if activity.private:
-            summary['distance_private'] += activity.distance.get_num()
+            summary['distance_private'] += activity_distance
             summary['private_ids'].append(activity.id)
         else:
             summary['count_public'] += 1
-            summary['distance_public'] += activity.distance.get_num()
+            summary['distance_public'] += activity_distance
+
+        if (activity_distance / 1000.0) < short_ride_threshold:
+            summary['short_rides_ids'].append(activity.id)
+
         if activity.commute:
             summary['commute_ids'].append(activity.id)
     # convert to kms
