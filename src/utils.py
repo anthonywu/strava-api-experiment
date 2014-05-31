@@ -11,7 +11,7 @@ class ConfigError(BaseException):
 
 class MyStravaClient(stravalib.client.Client):
 
-    API_CALL_PAUSE_SECONDS = 0.5
+    API_CALL_PAUSE_SECONDS = 1.5  # 40 requests per minute
 
     def get_all_gears(self):
         all_activities = self.get_activities()
@@ -40,7 +40,11 @@ class MyStravaClient(stravalib.client.Client):
     def batch_set_privacy(self, activity_ids, private=True):
         updated_ids = []
         for each in activity_ids:
-            self.update_activity(each, private=private)
+            try:
+                self.update_activity(each, private=private)
+            except TypeError, e:
+                # workaroiund for a bug in stravalib: Rate Limit errors are raised as "TypeError: a float is required"
+                time.sleep(15)  # naively cool down for 15 seconds, this works pretty well, implement exponential back-off later
             time.sleep(self.API_CALL_PAUSE_SECONDS)
             updated_ids.append(each)
         return updated_ids
