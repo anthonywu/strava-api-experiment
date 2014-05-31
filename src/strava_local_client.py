@@ -7,6 +7,7 @@ Get your *Client ID* and *Client Secret* from https://www.strava.com/settings/ap
 
 Usage:
   strava_local_client.py get_write_token <client_id> <client_secret> [options]
+  strava_local_client.py find_settings
 
 Options:
   -h --help      Show this screen.
@@ -57,3 +58,5 @@ if __name__ == '__main__':
             print(t.green('On OS X - launching url at default browser'))
             subprocess.call(['open', auth_url])
         app.run(port=int(args['--port']))
+    elif args['find_settings']:
+        subprocess.call(['open', 'https://www.strava.com/settings/api'])
