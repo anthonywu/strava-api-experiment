@@ -37,6 +37,6 @@ nosetests.xml
 
 # autoenv / virtualenv
 .env
-.virtualenv/*
+.*virtualenv/*
 vxapi/driver.py
 
