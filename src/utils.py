@@ -25,17 +25,25 @@ class MyStravaClient(stravalib.client.Client):
     def get_activities(self, **kwargs):
         return list(stravalib.client.Client.get_activities(self, **kwargs))
 
-    def get_activities_current_month(self, filter_types=['Ride']):
-        # get first date of current month
-        now = datetime.datetime.now()
-        first_of_month = datetime.datetime(now.year, now.month, 1)
+    def get_activities_after_date(self, after_date, filter_types=['Ride']):
         # compile activities since first day of current month
         matches = []
-        activities_list = self.get_activities(after=first_of_month)
+        activities_list = self.get_activities(after=after_date)
         for activity in activities_list:
             if activity.type in filter_types:
                 matches.append(activity)
         return matches
+
+    def get_activities_current_month(self, filter_types=['Ride']):
+        # get first date of current month
+        now = datetime.datetime.now()
+        first_of_month = datetime.datetime(now.year, now.month, 1)
+        return self.get_activities_after_date(first_of_month)
+
+    def get_activities_last_n_days(self, n_days, filter_types=['Ride']):
+        now = datetime.datetime.now()
+        since_date = now - datetime.timedelta(days=n_days)
+        return self.get_activities_after_date(since_date)
 
     def batch_set_privacy(self, activity_ids, private=True):
         updated_ids = []
