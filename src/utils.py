@@ -49,8 +49,8 @@ class MyStravaClient(stravalib.client.Client):
             try:
                 logger.debug('Setting {id!s} privacy to {p!r}'.format(id=each, p=private))
                 self.update_activity(each, private=private)
-            except TypeError, e:
-                # workaroiund for a bug in stravalib: Rate Limit errors are raised as "TypeError: a float is required"
+            except TypeError:
+                # workaround for a bug in stravalib: Rate Limit errors are raised as "TypeError: a float is required"
                 time.sleep(15)  # naively cool down for 15 seconds, this works pretty well, implement exponential back-off later
             time.sleep(self.API_CALL_PAUSE_SECONDS)
             updated_ids.append(each)
