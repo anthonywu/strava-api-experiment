@@ -6,7 +6,13 @@ Bash usage:
 import konch
 
 import os
+import functools
+import logging
+import json
 import utils
+import cli_utils as cli
+
+logging.basicConfig()
 
 try:
 	client = utils.MyStravaClient(access_token=os.environ['STRAVA_API_TOKEN'])
@@ -21,6 +27,7 @@ konch.config({
   	'utils': utils,
   	'client': client,
   	'current_activities': current_activities,
-  	'current_summary': utils.summarize(current_activities)
+  	'current_summary': utils.summarize(current_activities),
+    'cli': cli
   }
 })
