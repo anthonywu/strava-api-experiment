@@ -57,7 +57,7 @@ class MyStravaClient(stravalib.client.Client):
         return updated_ids
 
     def batch_toggle_privacy(self, activity_ids):
-        updated = self.batch_set_privacy(activity_ids, private=True)
+        updated = self.batch_set_privacy(activity_ids, private=False)
         if raw_input('Toggle {n} activities back to private? y/n > '.format(n=len(updated))).lower() == 'y':
             updated = self.batch_set_privacy(updated, private=True)
         return updated
