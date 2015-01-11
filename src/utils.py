@@ -1,7 +1,11 @@
 import collections
 import datetime
+import logging
 import stravalib.client
 import time
+
+logger = logging.getLogger('strava-client')
+logger.setLevel(logging.DEBUG)
 
 class BaseException(Exception):
     pass
@@ -49,6 +53,7 @@ class MyStravaClient(stravalib.client.Client):
         updated_ids = []
         for each in activity_ids:
             try:
+                logger.debug('Setting {id!s} privacy to {p!r}'.format(id=each, p=private))
                 self.update_activity(each, private=private)
             except TypeError, e:
                 # workaroiund for a bug in stravalib: Rate Limit errors are raised as "TypeError: a float is required"
