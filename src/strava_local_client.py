@@ -20,6 +20,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 API_CLIENT = stravalib.Client()
+WRITE_SCOPES = ["activity:write", "activity:read_all", "profile:read_all"]
 
 # set these in __main__
 CLIENT_ID = None
@@ -27,13 +28,24 @@ CLIENT_SECRET = None
 
 @app.route("/auth")
 def auth_callback():
+    oauth_error = request.args.get('error')
+    if oauth_error:
+        return {'error': oauth_error, 'state': request.args.get('state')}, 400
+
     code = request.args.get('code')
-    access_token = API_CLIENT.exchange_code_for_token(
+    if not code:
+        return {'error': 'missing_code', 'state': request.args.get('state')}, 400
+
+    token_response = API_CLIENT.exchange_code_for_token(
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         code=code
         )
-    return access_token
+    if isinstance(token_response, tuple):
+        access_info = token_response[0]
+    else:
+        access_info = token_response
+    return access_info
 
 
 if __name__ == '__main__':
@@ -46,11 +58,12 @@ if __name__ == '__main__':
     t = Terminal()
 
     if args['get_write_token']:
-        CLIENT_ID, CLIENT_SECRET = args['<client_id>'], args['<client_secret>']
+        CLIENT_ID = int(args['<client_id>'])
+        CLIENT_SECRET = args['<client_secret>']
         auth_url = API_CLIENT.authorization_url(
-            client_id=args['<client_id>'],
+            client_id=CLIENT_ID,
             redirect_uri='http://127.0.0.1:{port}/auth'.format(port=args['--port']),
-            scope='view_private,write',
+            scope=WRITE_SCOPES,
             state='from_cli'
             )
         if sys.platform == 'darwin':
